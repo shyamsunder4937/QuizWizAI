@@ -46,7 +46,7 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
     setIsLoading(true);
 
     try {
-      const response = await apiRequest<{ questions: QuizQuestion[] }>(
+      const response = await apiRequest(
         "POST",
         "/api/quiz/generate",
         {
@@ -55,14 +55,16 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
         }
       );
 
-      if (response?.questions && response.questions.length > 0) {
+      const data = await response.json();
+
+      if (data?.questions && Array.isArray(data.questions) && data.questions.length > 0) {
         onStartQuiz(
           {
             category: selectedCategory,
             timer: selectedTimer,
             questionCount: selectedQuestionCount,
           },
-          response.questions
+          data.questions
         );
       } else {
         throw new Error("No questions received");
