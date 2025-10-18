@@ -3,16 +3,10 @@ import { z } from "zod";
 export const quizCategories = ["VLSI", "React", "Digital Signals"] as const;
 export type QuizCategory = typeof quizCategories[number];
 
-export const timerOptions = [1, 2, 5] as const;
-export type TimerOption = typeof timerOptions[number];
-
-export const questionCountOptions = [5, 10, 15, 20] as const;
-export type QuestionCountOption = typeof questionCountOptions[number];
-
 export const quizConfigSchema = z.object({
   category: z.enum(quizCategories),
-  timer: z.enum(timerOptions),
-  questionCount: z.enum(questionCountOptions),
+  timer: z.number().min(1).max(5),
+  questionCount: z.number().min(5).max(20),
 });
 
 export type QuizConfig = z.infer<typeof quizConfigSchema>;

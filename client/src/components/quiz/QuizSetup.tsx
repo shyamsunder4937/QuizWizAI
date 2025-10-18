@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { Cpu, Code, Radio, Loader2 } from "lucide-react";
-import type { QuizConfig, QuizCategory, TimerOption, QuestionCountOption, QuizQuestion } from "@shared/schema";
-import { quizCategories, timerOptions, questionCountOptions } from "@shared/schema";
+import type { QuizConfig, QuizCategory, QuizQuestion } from "@shared/schema";
+import { quizCategories } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -26,8 +28,8 @@ interface QuizSetupProps {
 
 export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
   const [selectedCategory, setSelectedCategory] = useState<QuizCategory | null>(null);
-  const [selectedTimer, setSelectedTimer] = useState<TimerOption>(2);
-  const [selectedQuestionCount, setSelectedQuestionCount] = useState<QuestionCountOption>(10);
+  const [selectedTimer, setSelectedTimer] = useState<number>(2);
+  const [selectedQuestionCount, setSelectedQuestionCount] = useState<number>(10);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -135,21 +137,32 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
         <Card>
           <CardHeader>
             <CardTitle>Question Count</CardTitle>
-            <CardDescription>How many questions would you like?</CardDescription>
+            <CardDescription>Select between 5 and 20 questions</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-3">
-              {questionCountOptions.map((count) => (
-                <Button
-                  key={count}
-                  variant={selectedQuestionCount === count ? "default" : "outline"}
-                  onClick={() => setSelectedQuestionCount(count)}
-                  data-testid={`button-question-count-${count}`}
-                  className="flex-1 min-w-[70px]"
-                >
-                  {count}
-                </Button>
-              ))}
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="question-count" className="text-base font-medium">
+                  Questions
+                </Label>
+                <span className="text-3xl font-bold text-primary" data-testid="text-question-count">
+                  {selectedQuestionCount}
+                </span>
+              </div>
+              <Slider
+                id="question-count"
+                min={5}
+                max={20}
+                step={1}
+                value={[selectedQuestionCount]}
+                onValueChange={(value) => setSelectedQuestionCount(value[0])}
+                className="w-full"
+                data-testid="slider-question-count"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>5</span>
+                <span>20</span>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -157,21 +170,32 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
         <Card>
           <CardHeader>
             <CardTitle>Timer</CardTitle>
-            <CardDescription>Set your challenge duration</CardDescription>
+            <CardDescription>Set duration from 1 to 5 minutes</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-3">
-              {timerOptions.map((time) => (
-                <Button
-                  key={time}
-                  variant={selectedTimer === time ? "default" : "outline"}
-                  onClick={() => setSelectedTimer(time)}
-                  data-testid={`button-timer-${time}`}
-                  className="flex-1 min-w-[90px]"
-                >
-                  {time} {time === 1 ? "min" : "mins"}
-                </Button>
-              ))}
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="timer" className="text-base font-medium">
+                  Duration
+                </Label>
+                <span className="text-3xl font-bold text-primary" data-testid="text-timer-minutes">
+                  {selectedTimer} <span className="text-xl text-muted-foreground">min</span>
+                </span>
+              </div>
+              <Slider
+                id="timer"
+                min={1}
+                max={5}
+                step={1}
+                value={[selectedTimer]}
+                onValueChange={(value) => setSelectedTimer(value[0])}
+                className="w-full"
+                data-testid="slider-timer"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>1 min</span>
+                <span>5 min</span>
+              </div>
             </div>
           </CardContent>
         </Card>
