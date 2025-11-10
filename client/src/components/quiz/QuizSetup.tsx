@@ -12,14 +12,14 @@ import { apiRequest } from "@/lib/queryClient";
 
 const categoryIcons = {
   "VLSI": Cpu,
-  "React": Code,
-  "Digital Signals": Radio,
+  "Verilog": Code,
+  "Digital Electronics": Radio,
 };
 
 const categoryDescriptions = {
   "VLSI": "Very Large Scale Integration design and architecture",
-  "React": "Modern React development and best practices",
-  "Digital Signals": "Signal processing and digital communications",
+  "Verilog": "Hardware description language for digital circuits",
+  "Digital Electronics": "Digital logic design and electronic circuits",
 };
 
 interface QuizSetupProps {
@@ -77,7 +77,7 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+       setIsLoading(false);
     }
   };
 
@@ -134,7 +134,6 @@ export function QuizSetup({ onStartQuiz }: QuizSetupProps) {
           </div>
         </CardContent>
       </Card>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>

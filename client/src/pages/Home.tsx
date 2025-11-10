@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { QuizSetup } from "@/components/quiz/QuizSetup";
 import { QuizInterface } from "@/components/quiz/QuizInterface";
 import { QuizResults } from "@/components/quiz/QuizResults";
 import type { QuizConfig, QuizQuestion, UserAnswer } from "@shared/schema";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type QuizState = "setup" | "taking" | "results";
 
@@ -42,7 +45,15 @@ export default function Home() {
             </div>
             <h1 className="text-xl font-bold text-foreground">AI Quiz Master</h1>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <Link href="/learning">
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Learning Resources</span>
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
